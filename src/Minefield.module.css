@@ -1,0 +1,36 @@
+.Raise {
+  border-top: 4px solid white;
+  border-left: 4px solid white;
+  border-right: 4px solid #808080;
+  border-bottom: 4px solid #808080;
+}
+
+.Lower {
+  border-top: 4px solid #808080;
+  border-left: 4px solid #808080;
+  border-right: 4px solid white;
+  border-bottom: 4px solid white;
+}
+
+.Frame {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px;
+  background-color: #c6c6c6;
+}
+
+.Field {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Cell {
+  width: 24px;
+  height: 24px;
+
+  background-color: #c6c6c6;
+  box-shadow: inset 1px 1px #a5a5a5;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+}

@@ -1,0 +1,12 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 24px;
+  width: 900px;
+  height: 100%;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  box-shadow: 0 0 16px 0px lightgray;
+}
