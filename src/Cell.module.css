@@ -1,0 +1,27 @@
+.Cell {
+  display: flex;
+  place-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.Opened {
+  background-color: #c6c6c6;
+  box-shadow: inset 1px 1px #a5a5a5;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+}
+
+.Unopened {
+  border-top: 3px solid white;
+  border-left: 3px solid white;
+  border-right: 3px solid #808080;
+  border-bottom: 3px solid #808080;
+}
+
+.Exploded {
+  background-color: red;
+}
+
+.Revealed {
+}

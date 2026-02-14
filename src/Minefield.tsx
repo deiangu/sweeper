@@ -1,36 +1,82 @@
-import { shuffle } from "lodash-es";
-import { For } from "solid-js";
+import { createSignal, For } from "solid-js";
+import { Cell } from "./Cell";
 import classes from "./Minefield.module.css";
-
-type MinefieldConfig = {
-  width: number;
-  height: number;
-  mines: number;
-};
+import { createField, type MinefieldConfig } from "./createField";
+import { getNeighborIndices } from "./getNeighborIndices";
 
 type MinefieldProps = {
   config: MinefieldConfig;
 };
 
 export function Minefield({ config }: MinefieldProps) {
-  const fields = Array.from<boolean>({
-    length: config.width * config.height,
-  }).fill(false);
-  for (let i = 0; i < config.mines; i++) {
-    fields[i] = true;
-  }
-  const shuffledFields = shuffle(fields);
+  const [minefield, setMinefield] = createSignal(createField(config));
+  const [isGameLost, setGameLost] = createSignal(false);
+  const [isGameWon, setGameWon] = createSignal(false);
+
+  const onOpenCell = (index: number) => {
+    const newMinefield = minefield().slice();
+    const queue = [index];
+    while (queue.length) {
+      const idx = queue.pop()!;
+      if (!newMinefield[idx].isOpen) {
+        newMinefield[idx] = { ...newMinefield[idx], isOpen: true };
+
+        if (newMinefield[idx].isMine) {
+          setGameLost(true);
+          setMinefield(newMinefield);
+          return;
+        }
+        if (newMinefield[idx].neighborMines === 0) {
+          const forQ = getNeighborIndices(idx, config).filter(
+            (i) => !newMinefield[i].isOpen,
+          );
+          queue.push(...forQ);
+        }
+      }
+    }
+
+    const unopenedCount = newMinefield.reduce(
+      (acc, cell) => acc + (cell.isOpen ? 0 : 1),
+      0,
+    );
+
+    if (unopenedCount === config.mines) {
+      setGameWon(true);
+    }
+
+    setMinefield(newMinefield);
+  };
 
   return (
     <div class={`${classes.Frame} ${classes.Raise}`}>
-      <div class={`${classes.Controls} ${classes.Lower}`}>TODO: Controls</div>
+      <div
+        class={`${classes.Controls} ${classes.Lower}`}
+        onClick={() => {
+          setMinefield(createField(config));
+          setGameLost(false);
+          setGameWon(false);
+        }}
+      >
+        {isGameLost() && "Game lost! Click here to play again."}
+        {isGameWon() && "Game won! Click here to play again."}
+        {!isGameWon() && !isGameLost() && "Minefield!"}
+      </div>
 
       <div
         class={`${classes.Field} ${classes.Lower}`}
         style={{ width: `${config.width * 24 + 8}px` }}
       >
-        <For each={shuffledFields}>
-          {(val) => <div class={classes.Cell}>{val ? 1 : 0}</div>}
+        <For each={minefield()}>
+          {({ isMine, isOpen, neighborMines }, index) => (
+            <Cell
+              isMine={isMine}
+              isOpen={isOpen}
+              neighborMines={neighborMines}
+              isGameLost={isGameLost()}
+              isGameWon={isGameWon()}
+              onOpen={() => onOpenCell(index())}
+            />
+          )}
         </For>
       </div>
     </div>

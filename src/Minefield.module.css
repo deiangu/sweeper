@@ -18,19 +18,10 @@
   gap: 24px;
   padding: 8px;
   background-color: #c6c6c6;
+  user-select: none;
 }
 
 .Field {
   display: flex;
   flex-wrap: wrap;
-}
-
-.Cell {
-  width: 24px;
-  height: 24px;
-
-  background-color: #c6c6c6;
-  box-shadow: inset 1px 1px #a5a5a5;
-  border-top: 1px solid #808080;
-  border-left: 1px solid #808080;
 }
