@@ -32,6 +32,18 @@ export function Minefield({ config }: MinefieldProps) {
           );
           queue.push(...forQ);
         }
+      } else {
+        const mineCount = newMinefield[idx].neighborMines;
+        const neighbors = getNeighborIndices(idx, config);
+        const markedCount = neighbors.filter(
+          (i) => newMinefield[i].isMarked,
+        ).length;
+        if (mineCount > 0 && mineCount === markedCount) {
+          const targets = neighbors.filter(
+            (i) => !newMinefield[i].isOpen && !newMinefield[i].isMarked,
+          );
+          queue.push(...targets);
+        }
       }
     }
 
@@ -44,6 +56,13 @@ export function Minefield({ config }: MinefieldProps) {
       setGameWon(true);
     }
 
+    setMinefield(newMinefield);
+  };
+
+  const onMarkCell = (index: number) => {
+    const newMinefield = minefield().slice();
+    const isMarked = !newMinefield[index].isMarked;
+    newMinefield[index] = { ...newMinefield[index], isMarked };
     setMinefield(newMinefield);
   };
 
@@ -67,16 +86,21 @@ export function Minefield({ config }: MinefieldProps) {
         style={{ width: `${config.width * 24 + 8}px` }}
       >
         <For each={minefield()}>
-          {({ isMine, isOpen, neighborMines }, index) => (
-            <Cell
-              isMine={isMine}
-              isOpen={isOpen}
-              neighborMines={neighborMines}
-              isGameLost={isGameLost()}
-              isGameWon={isGameWon()}
-              onOpen={() => onOpenCell(index())}
-            />
-          )}
+          {({ isMine, isOpen, isMarked, neighborMines }, index) => {
+            console.log("render!");
+            return (
+              <Cell
+                isMine={isMine}
+                isMarked={isMarked}
+                isOpen={isOpen}
+                neighborMines={neighborMines}
+                isGameLost={isGameLost()}
+                isGameWon={isGameWon()}
+                onOpen={() => onOpenCell(index())}
+                onMarkToggle={() => onMarkCell(index())}
+              />
+            );
+          }}
         </For>
       </div>
     </div>

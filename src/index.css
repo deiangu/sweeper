@@ -1,3 +1,9 @@
+@font-face {
+  font-family: Sweeper;
+  font-weight: 500;
+  src: url("./assets/mine-sweeper.otf.woff2") format("woff2");
+}
+
 html,
 body {
   width: 100%;

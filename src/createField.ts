@@ -8,8 +8,7 @@ export type MinefieldConfig = {
 };
 
 export function createField(config: MinefieldConfig) {
-
-const init = Array.from<boolean>({
+  const init = Array.from<boolean>({
     length: config.width * config.height,
   }).fill(false);
   for (let i = 0; i < config.mines; i++) {
@@ -17,11 +16,17 @@ const init = Array.from<boolean>({
   }
   const minefield = shuffle(init);
 
-
   function countMinesFor(index: number) {
-    return getNeighborIndices(index, config).reduce((acc, index) => acc + (minefield[index] ? 1 : 0), 0);
+    return getNeighborIndices(index, config).reduce(
+      (acc, index) => acc + (minefield[index] ? 1 : 0),
+      0,
+    );
   }
 
-  return minefield.map((isMine, i) => ({ isMine, isOpen: false, neighborMines: countMinesFor(i) }))
-  
+  return minefield.map((isMine, i) => ({
+    isMine,
+    isOpen: false,
+    isMarked: false,
+    neighborMines: countMinesFor(i),
+  }));
 }

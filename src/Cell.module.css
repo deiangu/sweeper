@@ -23,5 +23,35 @@
   background-color: red;
 }
 
-.Revealed {
+.Number {
+  font-family: Sweeper;
+  font-size: 15px;
+}
+
+.Zero {
+  display: none;
+}
+.One {
+  color: #0000f7;
+}
+.Two {
+  color: #007700;
+}
+.Three {
+  color: #ec0000;
+}
+.Four {
+  color: #000080;
+}
+.Five {
+  color: #800000;
+}
+.Six {
+  color: #008284;
+}
+.Seven {
+  color: #840084;
+}
+.Eight {
+  color: #757575;
 }
